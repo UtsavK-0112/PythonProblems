@@ -98,3 +98,84 @@ def domino_cycle(tiles):
             return False
 
     return True
+
+
+# For 7. Colour Trio
+def mix(colour_1, colour_2, trio=['r', 'b', 'y']):
+    if colour_1 == colour_2:
+        return colour_1
+    else:
+        return list(filter(lambda x: (x != colour_1 and x != colour_2), trio))[0]
+
+
+def colour_trio(colours):
+    c = colours
+
+    while len(c) > 1:
+        result = ""
+        for index, colour in enumerate(list(c)[:-1]):
+            result += mix(colour, c[index + 1])
+        c = result
+
+    return c
+
+
+def extract_increasing(digits):
+    current = 0
+    previous = -1
+    result = []
+
+    for d in digits:
+        current = 10 * current + int(d)
+        # print(current)
+
+        if current > previous:
+            previous = current
+            result.append(previous)
+            current = 0
+            # print(":)")
+    return result
+
+
+def is_subsequence(letters, word):
+    letter_index = 0
+
+    for c in word:
+        if c == letters[letter_index]:
+            letter_index += 1
+            if letter_index == len(letters):
+                return True
+
+    return letter_index == len(letters)
+
+
+def words_with_letters(words, letters):
+    return list(filter(lambda word: is_subsequence(letters, word), words))
+
+
+def taxi_zum_zum(moves):
+    t = 0
+    pos = [0, 0]
+
+    for move in moves:
+        if move == "R":
+            t += 90
+        elif move == "L":
+            t -= 90
+
+        if t >= 360:
+            t -= 360
+        elif t < 0:
+            t += 360
+
+        if move == "F":
+            if t == 0:
+                pos[1] += 1
+            elif t == 90:
+                pos[0] += 1
+            elif t == 180:
+                pos[1] -= 1
+            elif t == 270:
+                pos[0] -= 1
+
+    return tuple(pos)
